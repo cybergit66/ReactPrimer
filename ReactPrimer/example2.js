@@ -1,3 +1,16 @@
+function TodoList({todos}){
+    return (
+        <ul>
+            {todos.map(todo => 
+                <li key={todo.id}>
+                    {todo.isCompleted ? <del>{todo.text}</del> : todo.text}
+                </li>
+                )
+            }
+        </ul>
+    );
+}
+
 class AppComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -16,15 +29,17 @@ class AppComponent extends React.Component {
     }
     
     render(){
-        const {filter} = this.state;
+        const {filter, todos} = this.state;
+        const filteredTodos = filter.showCompleted ? todos : todos.filter(todo => !todo.isCompleted);
         
         return(
             <div>
                 <h2>Todo List (again..)</h2>
                 <label>
                     Show Completed
-                    <input type="checkbox" checked={filter.showCompleted} onChange={this._onShowCompletedClicked} />
+                    <input type="checkbox" checked={filter.showCompleted} onChange={this._onShowCompletedChanged} />
                 </label>
+                <TodoList todos={filteredTodos}/>
             </div>
         );
     }
